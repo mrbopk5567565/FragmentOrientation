@@ -8,6 +8,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 
 /**
@@ -15,17 +18,27 @@ import android.view.ViewGroup;
  */
 public class DetailFragment extends Fragment {
 
-
-    public DetailFragment() {
-        // Required empty public constructor
-    }
-
+    View view;
+    TextView txtChiTiet;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail, container, false);
+        view = inflater.inflate(R.layout.fragment_detail, container, false);
+
+        txtChiTiet = view.findViewById(R.id.textviewChitiet);
+
+        ListFragment listFragment = (ListFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.fragmentList);
+        if (listFragment != null){
+            listFragment.setOnListenValue(new OnListenValue() {
+                @Override
+                public void onChange(String text) {
+                    txtChiTiet.setText(text);
+                }
+            });
+        }
+        return view;
     }
 
 }

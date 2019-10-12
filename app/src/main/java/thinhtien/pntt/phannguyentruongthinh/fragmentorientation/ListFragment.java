@@ -1,6 +1,7 @@
 package thinhtien.pntt.phannguyentruongthinh.fragmentorientation;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -25,6 +26,7 @@ public class ListFragment extends Fragment {
     RecyclerView mRecyclerView;
     SanphamAdapter mSanphamAdapter;
     ArrayList<SanPham> mSanpham;
+    OnListenValue onListenValue;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,10 +48,21 @@ public class ListFragment extends Fragment {
         ((SanphamAdapter)mRecyclerView.getAdapter()).onItemClick(new OnItemClickListener() {
             @Override
             public void onClickItem(View view, int position) {
-                Toast.makeText(getActivity(), mSanpham.get(position).getTen(), Toast.LENGTH_SHORT).show();
+                DetailFragment detailFragment = (DetailFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.fragmentDetail);
+                if (detailFragment != null && detailFragment.isInLayout()){
+                    onListenValue.onChange(mSanpham.get(position).getTen());
+                } else {
+                    Intent intent = new Intent(getActivity(),Main2Activity.class);
+                    intent.putExtra("chuoi",mSanpham.get(position).getTen());
+                    startActivity(intent);
+                }
             }
         });
         return mView;
+    }
+
+    public void setOnListenValue(OnListenValue onListenValue){
+        this.onListenValue = onListenValue;
     }
 
 }
